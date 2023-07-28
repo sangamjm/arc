@@ -15,7 +15,7 @@ helm install arc \
 
 ```sh
 kubectl create secret generic arc-runners \
-    --namespace sangamjm \                                                                              system  at 
+    --namespace arc-runners \
     --from-literal=github_app_id=<GITHUB_APP_ID> \
     --from-literal=github_app_installation_id=<GITHUB_APP_INSTALLATION_ID> \
     --from-file=github_app_private_key=<*.private-key.pem> \
