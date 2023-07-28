@@ -1,13 +1,19 @@
 # ARC Configuration
 Repository for testing GitHub ARC
 
+## Minikube Cluster
+
+```sh 
+minikube start -p arc --cpus=2 --memory=4096 --mount-string="/run/udev:/run/udev" --mount
+```
+
 ## Install ARC Controller
 
 ```sh
 helm install arc \
     --namespace arc-controller \
     --create-namespace \
-    -f controller/values.yml \
+    -f helm/controller/values.yml \
     oci://ghcr.io/actions/actions-runner-controller-charts/gha-runner-scale-set-controller
 ```
 
@@ -28,6 +34,6 @@ kubectl create secret generic arc-runners \
 helm install arc \
     --namespace arc-runners \
     --create-namespace \
-    -f scale-set-1/values.yml \
+    -f helm/scale-set-1/values.yml \
     oci://ghcr.io/actions/actions-runner-controller-charts/gha-runner-scale-set
 ```

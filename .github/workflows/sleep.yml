@@ -1,0 +1,21 @@
+name: Sleep for X Seconds
+
+on:
+  workflow_dispatch:
+    inputs:
+      job_length:
+        description: 'Length of job in seconds'
+        type: string
+        default: '180'
+      runs_on:
+        description: 'Runner label to test the connectivity'
+        type: string
+        required: true
+
+jobs:
+  just_sleep:
+    name: Sleep for ${{ inputs.job_length }} seconds
+    runs-on: ${{ inputs.runs_on }}
+    steps:
+      - name: Sleep for ${{ inputs.job_length }} seconds
+        run: sleep ${{ inputs.job_length }}

@@ -158,7 +158,7 @@ template:
   spec:
     containers:
     - name: runner
-      image: ghcr.io/actions/actions-runner:0.4.0
+      image: ghcr.io/actions/actions-runner:2.306.0
       command: ["/home/runner/run.sh"]
 
 ## Optional controller service account that needs to have required Role and RoleBinding
