@@ -19,7 +19,12 @@ Repository for testing GitHub ARC
         oci://ghcr.io/actions/actions-runner-controller-charts/gha-runner-scale-set-controller
     ```
 
-5. Create a secret
+6. Create a namespace
+    ```sh
+    kubectl create ns arc-runners
+    ```
+
+7. Create a secret
     ```sh
     kubectl create secret generic arc-runners \
         --namespace arc-runners \
@@ -29,7 +34,7 @@ Repository for testing GitHub ARC
         --dry-run=client -o yaml | kubectl apply -f -
     ```
 
-6. Install ARC Scale Set
+8. Install ARC Scale Set
     ```sh
     helm install arc \
         --namespace arc-runners \
@@ -38,9 +43,9 @@ Repository for testing GitHub ARC
         oci://ghcr.io/actions/actions-runner-controller-charts/gha-runner-scale-set
     ```
 
-7. Create a workflow under `.github/workflows` with `runs-on` value set to a created Scale Set name
+9. Create a workflow under `.github/workflows` with `runs-on` value set to a Scale Set name defined in `helm/scale-set-1/values.yml`
 
-8. For Kubernetes mode, install `openebs` using a Helm chart.
+10. For Kubernetes mode, install `openebs` using a Helm chart.
     ```sh
     helm repo add openebs https://openebs.github.io/charts
     helm repo update
@@ -48,8 +53,22 @@ Repository for testing GitHub ARC
         --namespace openebs \
         --create-namespace
     ```
+11. Create a namespace
+    ```sh
+    kubectl create ns arc-runners-k8
+    ``````
 
-9. Install ARC Scale Set
+12. 7. Create a secret
+    ```sh
+    kubectl create secret generic arc-runners \
+        --namespace arc-runners-k8 \
+        --from-literal=github_app_id=<GITHUB_APP_ID> \
+        --from-literal=github_app_installation_id=<GITHUB_APP_INSTALLATION_ID> \
+        --from-file=github_app_private_key=<*.private-key.pem> \
+        --dry-run=client -o yaml | kubectl apply -f -
+    ```
+
+12. Install ARC Scale Set
      ```sh
     helm install arc \
         --namespace arc-runners-k8 \
@@ -57,3 +76,4 @@ Repository for testing GitHub ARC
         -f helm/scale-set-2/values.yml \
         oci://ghcr.io/actions/actions-runner-controller-charts/gha-runner-scale-set
     ```
+13. Create a workflow under `.github/workflows` with `runs-on` value set to a Scale Set name defined in `helm/scale-set-2/values.yml`
