@@ -40,12 +40,12 @@ githubConfigSecret: arc-runners
 maxRunners: 5
 
 ## minRunners is the min number of runners the auto scaling runner set will scale down to.
-minRunners: 0
+minRunners: 1
 
 # runnerGroup: "default"
 
 ## name of the runner scale set to create.  Defaults to the helm release name
-runnerScaleSetName: "sangamjm-dind"
+runnerScaleSetName: "sangam-k8-mode"
 
 ## A self-signed CA certificate for communication with the GitHub server can be
 ## provided using a config map key selector. If `runnerMountPath` is set, for
@@ -68,16 +68,16 @@ runnerScaleSetName: "sangamjm-dind"
 #       key: ca.crt
 #   runnerMountPath: /usr/local/share/ca-certificates/
 
-# containerMode:
-#   type: "dind"  ## type can be set to dind or kubernetes
+containerMode:
+  type: "kubernetes"  ## type can be set to dind or kubernetes
 #   ## the following is required when containerMode.type=kubernetes
-#   kubernetesModeWorkVolumeClaim:
-#     accessModes: ["ReadWriteOnce"]
+  kubernetesModeWorkVolumeClaim:
+    accessModes: ["ReadWriteOnce"]
 #     # For local testing, use https://github.com/openebs/dynamic-localpv-provisioner/blob/develop/docs/quickstart.md to provide dynamic provision volume with storageClassName: openebs-hostpath
-#     storageClassName: "dynamic-blob-storage"
-#     resources:
-#       requests:
-#         storage: 1Gi
+    storageClassName: "openebs-hostpath"
+    resources:
+      requests:
+        storage: 1Gi
 
 ## template is the PodSpec for each runner Pod
 template:
@@ -157,9 +157,12 @@ template:
   ##                   storage: 1Gi
   spec:
     containers:
-    - name: runner
-      image: ghcr.io/actions/actions-runner:2.307.1
-      command: ["/home/runner/run.sh"]
+      - name: runner
+        image: ghcr.io/actions/actions-runner:2.307.1
+        command: ["/home/runner/run.sh"]
+    env:
+      - name: ACTIONS_RUNNER_REQUIRE_JOB_CONTAINER
+        value: "false"
 
 ## Optional controller service account that needs to have required Role and RoleBinding
 ## to operate this gha-runner-scale-set installation.

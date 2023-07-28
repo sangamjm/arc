@@ -39,3 +39,21 @@ Repository for testing GitHub ARC
     ```
 
 7. Create a workflow under `.github/workflows` with `runs-on` value set to a created Scale Set name
+
+8. For Kubernetes mode, install `openebs` using a Helm chart.
+    ```sh
+    helm repo add openebs https://openebs.github.io/charts
+    helm repo update
+    helm install openebs openebs/openebs \
+        --namespace openebs \
+        --create-namespace
+    ```
+
+9. Install ARC Scale Set
+     ```sh
+    helm install arc \
+        --namespace arc-runners-k8 \
+        --create-namespace \
+        -f helm/scale-set-2/values.yml \
+        oci://ghcr.io/actions/actions-runner-controller-charts/gha-runner-scale-set
+    ```
