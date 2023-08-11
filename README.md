@@ -56,9 +56,9 @@ Repository for testing GitHub ARC
 11. Create a namespace
     ```sh
     kubectl create ns arc-runners-k8
-    ``````
+    ```
 
-12. 7. Create a secret
+12. Create a secret
     ```sh
     kubectl create secret generic arc-runners \
         --namespace arc-runners-k8 \
