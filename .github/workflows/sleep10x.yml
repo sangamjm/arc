@@ -1,0 +1,20 @@
+name: Test ARC Runners Scaling 10X
+on:
+  workflow_dispatch:
+    inputs:
+      job_length:
+        description: 'Length of job in seconds'
+        type: string
+        default: '180'
+jobs:
+  concurrent_jobs:
+    name: Sleep for ${{ inputs.job_length }} seconds
+    runs-on: ${{ vars.RUNNER_LABEL }}
+    strategy:
+      matrix:
+        foo: [ 1, 2 ]
+        bar: [ 1, 2, 3, 4, 5 ]
+      max-parallel: 10
+    steps:
+      - name: Sleep for ${{ inputs.job_length }} seconds
+        run: sleep ${{ inputs.job_length }}
